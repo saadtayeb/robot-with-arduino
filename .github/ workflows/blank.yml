@@ -1,0 +1,43 @@
+name: robot
+#include <AFMotor.h>
+#include <hcsr04.h>
+
+#define TRIG_PIN A4
+#define ECHO_PIN A5
+HCSR04 hcsr04(TRIG_PIN, ECHO_PIN, 20, 4000);
+AF_DCMotor moteurG(4, MOTOR12_64KHZ);
+AF_DCMotor moteurD(3, MOTOR12_64KHZ);
+
+void setup(){
+ 
+  moteurG.setSpeed(150);
+  moteurG.run(FORWARD);
+  moteurD.setSpeed(150);
+  moteurD.run(FORWARD);
+  Serial.begin(9600); 
+}
+void loop(){
+ 
+ long distance=hcsr04.distanceInMillimeters();
+ 
+ 
+  moteurG.run(FORWARD);
+  
+  moteurD.run(FORWARD);
+
+if(distance<50) {
+  
+moteurG.run(RELEASE);
+moteurD.run(RELEASE);
+delay(1000);
+moteurG.run(BACKWARD);
+moteurD.run(BACKWARD);
+delay(1000);
+moteurG.run(RELEASE);
+moteurD.run(RELEASE);
+delay(1000);
+moteurG.run(FORWARD);
+moteurD.run(RELEASE);
+delay(500);
+} 
+}
